@@ -20,29 +20,24 @@ def find_longest_parity_subsequence(arr):
     if not arr:
         return []
     
-    # Find the longest subsequence of even numbers
-    def get_parity_subsequence(parity_checker):
-        max_subsequence = []
-        current_subsequence = []
-        
-        for num in arr:
-            # If current number matches the parity
-            if parity_checker(num):
-                current_subsequence.append(num)
-            else:
-                # Update max_subsequence if current is longer
-                if len(current_subsequence) > len(max_subsequence):
-                    max_subsequence = current_subsequence.copy()
-                current_subsequence = []
-        
-        # Check one last time after loop completes
-        if len(current_subsequence) > len(max_subsequence):
-            max_subsequence = current_subsequence
-        
-        return max_subsequence
-
-    # Check which subsequence is longer: even or odd
-    even_subsequence = get_parity_subsequence(lambda x: x % 2 == 0)
-    odd_subsequence = get_parity_subsequence(lambda x: x % 2 != 0)
+    # Track subsequences for both even and odd parities
+    even_subs = []
+    odd_subs = []
     
-    return max(even_subsequence, odd_subsequence, key=len)
+    current_even = []
+    current_odd = []
+    
+    for num in arr:
+        if num % 2 == 0:  # even
+            current_even.append(num)
+            current_odd = []
+        else:  # odd
+            current_odd.append(num)
+            current_even = []
+        
+        # Update max subsequences
+        even_subs = max(even_subs, current_even, key=len)
+        odd_subs = max(odd_subs, current_odd, key=len)
+    
+    # Return the longer subsequence
+    return max(even_subs, odd_subs, key=len)
