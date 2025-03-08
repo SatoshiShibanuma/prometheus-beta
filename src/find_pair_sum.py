@@ -30,8 +30,13 @@ def find_pairs_with_target_sum(arr, target_sum):
     for num in arr:
         complement = target_sum - num
         
+        # Special case for numbers exactly half the target sum
+        if num == complement and num * 2 == target_sum:
+            pair = (num, complement)
+            if pair not in result:
+                result.append(pair)
         # Check if the complement exists and is not the same as current number
-        if complement in seen and complement != num:
+        elif complement in seen and complement != num:
             # Ensure pairs are sorted to avoid duplicates
             pair = tuple(sorted((num, complement)))
             if pair not in result:
