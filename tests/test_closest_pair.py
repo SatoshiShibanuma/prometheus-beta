@@ -39,7 +39,7 @@ def test_error_single_number():
 
 def test_large_list():
     """Test with a larger list of numbers."""
-    assert find_closest_pair([1, 5, 10, 20, 30, 40, 50]) == (10, 20)
+    assert find_closest_pair([1, 5, 10, 20, 30, 40, 50]) == (1, 5)
 
 def test_floating_point_numbers():
     """Test with floating point numbers."""
