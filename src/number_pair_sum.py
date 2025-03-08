@@ -6,7 +6,7 @@ def sum_pairs_with_difference_nine(file_path):
         file_path (str): Path to the text file containing numbers.
     
     Returns:
-        int: Sum of all pairs of numbers with a difference of 9.
+        float: Sum of all pairs of numbers with a difference of 9.
     
     Raises:
         FileNotFoundError: If the specified file cannot be found.
@@ -27,10 +27,15 @@ def sum_pairs_with_difference_nine(file_path):
         
         # Find pairs with difference of 9 and sum them
         pair_sum = 0
+        found_pairs = set()  # Track unique pairs to avoid duplicates
         for i in range(len(numbers)):
-            for j in range(i+1, len(numbers)):
-                if abs(numbers[i] - numbers[j]) == 9:
-                    pair_sum += numbers[i] + numbers[j]
+            for j in range(len(numbers)):
+                if i != j and abs(numbers[i] - numbers[j]) == 9:
+                    # Create a sorted tuple to identify unique pairs
+                    pair = tuple(sorted((numbers[i], numbers[j])))
+                    if pair not in found_pairs:
+                        pair_sum += numbers[i] + numbers[j]
+                        found_pairs.add(pair)
         
         return pair_sum
     
