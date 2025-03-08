@@ -30,12 +30,10 @@ def sum_pairs_with_difference_nine(file_path):
         used_indices = set()  # Track used indices to avoid double-counting
         for i in range(len(numbers)):
             for j in range(len(numbers)):
-                if i != j and i not in used_indices and j not in used_indices:
+                if i != j:
                     if abs(numbers[i] - numbers[j]) == 9:
                         pair_sum += numbers[i] + numbers[j]
-                        used_indices.add(i)
-                        used_indices.add(j)
-                        break  # Stop after finding first pair for each index
+                        break  # Stop after finding first pair
         
         return pair_sum
     
