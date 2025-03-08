@@ -8,7 +8,7 @@ def find_longest_parity_subsequence(arr):
     Returns:
         list[int]: The longest subsequence with consistent parity.
         If input is empty, returns an empty list.
-        Prioritizes odd subsequence when selecting subsequences.
+        Retains original sequence order and uses maximal matching elements.
     
     Examples:
         >>> find_longest_parity_subsequence([1, 3, 2, 4, 5])
@@ -21,34 +21,25 @@ def find_longest_parity_subsequence(arr):
     if not arr:
         return []
     
-    def max_parity_subsequence(parity_check):
-        candidates = []
-        start_indices = [i for i, num in enumerate(arr) if parity_check(num)]
+    def compute_subsequence(parity_check):
+        subsequence = []
+        # Strategy: find contiguous subsequence starting at first matching element
+        for start in range(len(arr)):
+            if parity_check(arr[start]):
+                current = [arr[start]]
+                # Check forward
+                for j in range(start + 1, len(arr)):
+                    if parity_check(arr[j]) and abs(arr[j] - current[-1]) <= 1:
+                        current.append(arr[j])
+                
+                # Compare with found subsequence
+                subsequence = max(subsequence, current, key=len)
         
-        for start_index in start_indices:
-            subsequence = [arr[start_index]]
-            
-            # Check forward
-            for j in range(start_index + 1, len(arr)):
-                if parity_check(arr[j]):
-                    subsequence.append(arr[j])
-                else:
-                    break
-            
-            # Check backward
-            for j in range(start_index - 1, -1, -1):
-                if parity_check(arr[j]):
-                    subsequence.insert(0, arr[j])
-                else:
-                    break
-            
-            candidates.append(subsequence)
-        
-        return max(candidates, key=len, default=[])
+        return subsequence
     
     # Compute subsequences
-    odd_sub = max_parity_subsequence(lambda x: x % 2 != 0)
-    even_sub = max_parity_subsequence(lambda x: x % 2 == 0)
+    odd_subsequence = compute_subsequence(lambda x: x % 2 != 0)
+    even_subsequence = compute_subsequence(lambda x: x % 2 == 0)
     
-    # Return odd subsequence if lengths are equal or longer
-    return odd_sub if len(odd_sub) >= len(even_sub) else even_sub
+    # Prefer odd subsequence if equal or longer
+    return odd_subsequence if len(odd_subsequence) >= len(even_subsequence) else even_subsequence
