@@ -21,12 +21,7 @@ def sum_of_multiples(min: int, max: int) -> int:
     
     # Find multiples of 2
     for num in range(min, max + 1):
-        if num % 2 == 0:
-            multiples.add(num)
-    
-    # Find multiples of 3
-    for num in range(min, max + 1):
-        if num % 3 == 0:
+        if num % 2 == 0 or num % 3 == 0:
             multiples.add(num)
     
     # Return the sum of unique multiples
