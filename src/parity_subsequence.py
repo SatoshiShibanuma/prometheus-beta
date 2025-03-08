@@ -8,7 +8,7 @@ def find_longest_parity_subsequence(arr):
     Returns:
         list[int]: The longest subsequence with consistent parity.
         If input is empty, returns an empty list.
-        If equal lengths, prioritizes even subsequence.
+        Prioritizes odd subsequence when multiple options exist.
     
     Examples:
         >>> find_longest_parity_subsequence([1, 3, 2, 4, 5])
@@ -21,23 +21,28 @@ def find_longest_parity_subsequence(arr):
     if not arr:
         return []
     
-    # Compute maximum even and odd subsequences
-    def max_parity_subsequence(parity_check):
-        subsequence = []
-        current = []
+    # Helper to get all subsequences of specific parity
+    def extract_parity_subsequences(parity_check):
+        subsequences = []
+        current_sub = []
         
         for num in arr:
             if parity_check(num):
-                current.append(num)
+                current_sub.append(num)
             else:
-                subsequence = max(subsequence, current, key=len)
-                current = []
+                if current_sub:
+                    subsequences.append(current_sub)
+                current_sub = []
         
-        # Check once after loop ends
-        return max(subsequence, current, key=len)
+        # Add last subsequence if it exists
+        if current_sub:
+            subsequences.append(current_sub)
+        
+        return max(subsequences, key=len) if subsequences else []
     
-    even_sub = max_parity_subsequence(lambda x: x % 2 == 0)
-    odd_sub = max_parity_subsequence(lambda x: x % 2 != 0)
+    # Extract both odd and even subsequences
+    odd_subs = extract_parity_subsequences(lambda x: x % 2 != 0)
+    even_subs = extract_parity_subsequences(lambda x: x % 2 == 0)
     
-    # Prefer even if lengths are equal or even is longer
-    return even_sub if len(even_sub) >= len(odd_sub) else odd_sub
+    # Prioritize odd subsequence if lengths are equal or longer
+    return odd_subs if len(odd_subs) >= len(even_subs) else even_subs
