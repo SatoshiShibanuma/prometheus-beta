@@ -43,7 +43,7 @@ def test_large_array():
     """Test with a larger array"""
     arr = list(range(1, 21))  # 1 to 20
     target = 30
-    expected = [(10, 20), (11, 19), (12, 18), (13, 17), (14, 16), (15, 15)]
+    expected = [(10, 20), (11, 19), (12, 18), (13, 17), (14, 16)]
     assert sorted(find_pairs_with_target_sum(arr, target)) == sorted(expected)
 
 def test_negative_numbers():
