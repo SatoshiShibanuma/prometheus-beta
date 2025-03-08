@@ -23,6 +23,10 @@ def find_pairs_with_target_sum(arr, target_sum):
     if len(arr) != len(set(arr)):
         raise ValueError("Input array must contain unique elements")
 
+    # Require at least two elements for a pair
+    if len(arr) < 2:
+        return []
+
     # Use a hash set for efficient lookup
     seen = set()
     result = []
@@ -30,13 +34,8 @@ def find_pairs_with_target_sum(arr, target_sum):
     for num in arr:
         complement = target_sum - num
         
-        # Special case for numbers exactly half the target sum
-        if num == complement and num * 2 == target_sum:
-            pair = (num, complement)
-            if pair not in result:
-                result.append(pair)
         # Check if the complement exists and is not the same as current number
-        elif complement in seen and complement != num:
+        if complement in seen and complement != num:
             # Ensure pairs are sorted to avoid duplicates
             pair = tuple(sorted((num, complement)))
             if pair not in result:
