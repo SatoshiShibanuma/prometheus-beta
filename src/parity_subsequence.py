@@ -8,6 +8,7 @@ def find_longest_parity_subsequence(arr):
     Returns:
         list[int]: The longest subsequence with consistent parity.
         If input is empty, returns an empty list.
+        Prioritizes continuous odd subsequence when multiple options exist.
     
     Examples:
         >>> find_longest_parity_subsequence([1, 3, 2, 4, 5])
@@ -21,23 +22,29 @@ def find_longest_parity_subsequence(arr):
         return []
     
     # Track subsequences for both even and odd parities
-    even_subs = []
-    odd_subs = []
+    longest_even = []
+    longest_odd = []
     
     current_even = []
     current_odd = []
     
     for num in arr:
-        if num % 2 == 0:  # even
+        # If number is even
+        if num % 2 == 0:
             current_even.append(num)
-            current_odd = []
-        else:  # odd
+            # Reset odd sequence if it doesn't help
+            if not current_odd or (current_odd and (len(current_even) > len(current_odd))):
+                current_odd = []
+        # If number is odd    
+        else:
             current_odd.append(num)
-            current_even = []
+            # Reset even sequence if it doesn't help
+            if not current_even or (current_even and (len(current_odd) > len(current_even))):
+                current_even = []
         
-        # Update max subsequences
-        even_subs = max(even_subs, current_even, key=len)
-        odd_subs = max(odd_subs, current_odd, key=len)
+        # Update longest subsequences
+        longest_even = max(longest_even, current_even, key=len)
+        longest_odd = max(longest_odd, current_odd, key=len)
     
-    # Return the longer subsequence
-    return max(even_subs, odd_subs, key=len)
+    # Return the longer subsequence, prioritizing odd if equal
+    return longest_odd if len(longest_odd) >= len(longest_even) else longest_even
