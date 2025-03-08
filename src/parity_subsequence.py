@@ -8,7 +8,7 @@ def find_longest_parity_subsequence(arr):
     Returns:
         list[int]: The longest subsequence with consistent parity.
         If input is empty, returns an empty list.
-        Prioritizes odd-parity subsequence when selecting subsequences.
+        Prioritizes odd subsequence when selecting subsequences.
     
     Examples:
         >>> find_longest_parity_subsequence([1, 3, 2, 4, 5])
@@ -21,19 +21,22 @@ def find_longest_parity_subsequence(arr):
     if not arr:
         return []
     
-    # Special function to build the exact required subsequence
-    def build_subsequence(parity_check):
-        subsequence = []
-        for num in arr:
-            if parity_check(num):
-                # Add number if subsequence is empty or can be added
-                if not subsequence or abs(num - subsequence[-1]) <= 1:
-                    subsequence.append(num)
-        return subsequence
+    def candidate_subsequences(parity_check):
+        """Generate candidate subsequences for a specific parity."""
+        candidates = []
+        for start in range(len(arr)):
+            if parity_check(arr[start]):
+                # Try extending the subsequence
+                current = [arr[start]]
+                for next_idx in range(start + 1, len(arr)):
+                    if parity_check(arr[next_idx]):
+                        current.append(arr[next_idx])
+                candidates.append(current)
+        return max(candidates, key=len) if candidates else []
     
-    # Compute odd and even subsequences
-    odd_subsequence = build_subsequence(lambda x: x % 2 != 0)
-    even_subsequence = build_subsequence(lambda x: x % 2 == 0)
+    # Get all subsequence candidates
+    odd_subsequence = candidate_subsequences(lambda x: x % 2 != 0)
+    even_subsequence = candidate_subsequences(lambda x: x % 2 == 0)
     
-    # Prioritize odd subsequence if lengths are equal or longer
+    # Return odd subsequence if lengths are equal or longer
     return odd_subsequence if len(odd_subsequence) >= len(even_subsequence) else even_subsequence
