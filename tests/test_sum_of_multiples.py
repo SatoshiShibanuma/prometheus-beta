@@ -3,7 +3,7 @@ from src.sum_of_multiples import sum_of_multiples
 
 def test_basic_range():
     """Test a basic range where some numbers are multiples of 2 or 3"""
-    assert sum_of_multiples(1, 10) == 33  # 2 + 3 + 4 + 6 + 8 + 9 + 10
+    assert sum_of_multiples(1, 10) == 42  # 2+3+4+6+8+9+10
 
 def test_range_with_no_multiples():
     """Test a range with no multiples of 2 or 3"""
@@ -15,7 +15,7 @@ def test_single_multiple():
 
 def test_larger_range():
     """Test a larger range"""
-    assert sum_of_multiples(1, 20) == 78
+    assert sum_of_multiples(1, 20) == 137
 
 def test_equal_min_max():
     """Test when min and max are equal and a multiple"""
@@ -32,4 +32,4 @@ def test_invalid_range():
 
 def test_zero_range():
     """Test a range starting from zero"""
-    assert sum_of_multiples(0, 5) == 15  # 0 + 2 + 3 + 4 + 6
+    assert sum_of_multiples(0, 5) == 9  # 0 + 3 + 6
