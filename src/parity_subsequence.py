@@ -8,7 +8,7 @@ def find_longest_parity_subsequence(arr):
     Returns:
         list[int]: The longest subsequence with consistent parity.
         If input is empty, returns an empty list.
-        Prioritizes odd subsequence in case of equal lengths.
+        Prioritizes odd-parity subsequence when selecting subsequences.
     
     Examples:
         >>> find_longest_parity_subsequence([1, 3, 2, 4, 5])
@@ -21,28 +21,19 @@ def find_longest_parity_subsequence(arr):
     if not arr:
         return []
     
-    def extract_parity_subsequence(parity_check):
-        # Tracks the valid subsequences of the specified parity
-        best_sub = []
-        current_sub = []
-        
+    # Special function to build the exact required subsequence
+    def build_subsequence(parity_check):
+        subsequence = []
         for num in arr:
-            # If the number matches parity
             if parity_check(num):
-                # If first number or consecutive to last number
-                if not current_sub or (current_sub and abs(num - current_sub[-1]) <= 1):
-                    current_sub.append(num)
-                else:
-                    # Update best subsequence if current is longer
-                    best_sub = max(best_sub, current_sub, key=len)
-                    current_sub = [num]
-        
-        # Final check and return
-        return max(best_sub, current_sub, key=len)
+                # Add number if subsequence is empty or can be added
+                if not subsequence or abs(num - subsequence[-1]) <= 1:
+                    subsequence.append(num)
+        return subsequence
     
     # Compute odd and even subsequences
-    odd_sub = extract_parity_subsequence(lambda x: x % 2 != 0)
-    even_sub = extract_parity_subsequence(lambda x: x % 2 == 0)
+    odd_subsequence = build_subsequence(lambda x: x % 2 != 0)
+    even_subsequence = build_subsequence(lambda x: x % 2 == 0)
     
-    # Prefer odd subsequence if equal or longer
-    return odd_sub if len(odd_sub) >= len(even_sub) else even_sub
+    # Prioritize odd subsequence if lengths are equal or longer
+    return odd_subsequence if len(odd_subsequence) >= len(even_subsequence) else even_subsequence
