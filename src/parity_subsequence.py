@@ -8,7 +8,7 @@ def find_longest_parity_subsequence(arr):
     Returns:
         list[int]: The longest subsequence with consistent parity.
         If input is empty, returns an empty list.
-        Prioritizes odd subsequence when multiple options exist.
+        Prioritizes odd subsequence in case of equal lengths.
     
     Examples:
         >>> find_longest_parity_subsequence([1, 3, 2, 4, 5])
@@ -21,25 +21,30 @@ def find_longest_parity_subsequence(arr):
     if not arr:
         return []
     
-    def get_max_subsequence(parity_check):
-        max_sub = []
-        current_sub = []
+    def extract_parity_subsequence(parity_check):
+        # Tracks the best subsequence of the specified parity
+        best_sub = []
+        current_sub = [arr[0]] if parity_check(arr[0]) else []
         
-        for num in arr:
+        for num in arr[1:]:
             if parity_check(num):
-                if not current_sub or num in current_sub:
-                    current_sub.append(num)
-                else:
-                    max_sub = max(max_sub, current_sub, key=len)
+                # If current subsequence is empty, start with this number
+                if not current_sub:
                     current_sub = [num]
+                # Non-consecutive handling: reset or adjust subsequence
+                elif len(current_sub) >= 1 and abs(num - current_sub[-1]) > 1:
+                    best_sub = max(best_sub, current_sub, key=len)
+                    current_sub = [num]
+                else:
+                    current_sub.append(num)
         
         # Final check
-        max_sub = max(max_sub, current_sub, key=len)
-        return max_sub
+        best_sub = max(best_sub, current_sub, key=len)
+        return best_sub
     
-    # Compute subsequences
-    odd_sub = get_max_subsequence(lambda x: x % 2 != 0)
-    even_sub = get_max_subsequence(lambda x: x % 2 == 0)
+    # Compute subsequences of different parities
+    odd_sub = extract_parity_subsequence(lambda x: x % 2 != 0)
+    even_sub = extract_parity_subsequence(lambda x: x % 2 == 0)
     
-    # Prefer odd if lengths are equal or longer
+    # Prefer odd subsequence if equal or longer
     return odd_sub if len(odd_sub) >= len(even_sub) else even_sub
