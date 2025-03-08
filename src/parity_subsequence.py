@@ -22,27 +22,25 @@ def find_longest_parity_subsequence(arr):
         return []
     
     def extract_parity_subsequence(parity_check):
-        # Tracks the best subsequence of the specified parity
+        # Tracks the valid subsequences of the specified parity
         best_sub = []
-        current_sub = [arr[0]] if parity_check(arr[0]) else []
+        current_sub = []
         
-        for num in arr[1:]:
+        for num in arr:
+            # If the number matches parity
             if parity_check(num):
-                # If current subsequence is empty, start with this number
-                if not current_sub:
-                    current_sub = [num]
-                # Non-consecutive handling: reset or adjust subsequence
-                elif len(current_sub) >= 1 and abs(num - current_sub[-1]) > 1:
+                # If first number or consecutive to last number
+                if not current_sub or (current_sub and abs(num - current_sub[-1]) <= 1):
+                    current_sub.append(num)
+                else:
+                    # Update best subsequence if current is longer
                     best_sub = max(best_sub, current_sub, key=len)
                     current_sub = [num]
-                else:
-                    current_sub.append(num)
         
-        # Final check
-        best_sub = max(best_sub, current_sub, key=len)
-        return best_sub
+        # Final check and return
+        return max(best_sub, current_sub, key=len)
     
-    # Compute subsequences of different parities
+    # Compute odd and even subsequences
     odd_sub = extract_parity_subsequence(lambda x: x % 2 != 0)
     even_sub = extract_parity_subsequence(lambda x: x % 2 == 0)
     
