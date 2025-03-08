@@ -7,10 +7,9 @@ def test_basic_pairs():
     with open('tests/test_numbers.txt', 'w') as f:
         f.write("5\n14\n23\n1\n10\n")
     
-    # 5 and 14 form a pair (difference of 9)
-    # 23 and 14 form a pair (difference of 9)
+    # All pairs with difference of 9 should be summed
     result = sum_pairs_with_difference_nine('tests/test_numbers.txt')
-    assert result == (5 + 14) + (23 + 14), "Failed to correctly sum pairs with difference of 9"
+    assert result == (5 + 14) + (23 + 14) + (1 + 10), "Failed to correctly sum pairs with difference of 9"
 
 def test_multiple_pairs():
     with open('tests/test_numbers.txt', 'w') as f:
