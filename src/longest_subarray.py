@@ -26,17 +26,19 @@ def find_longest_subarray(A, k):
     # Initialize variables
     max_length = 1
     current_length = 1
+    start = 0
     
     # Iterate through the array to find the longest subarray
     for i in range(1, len(A)):
-        # Check if the absolute difference meets the condition
+        # If difference condition met, extend current subarray
         if abs(A[i] - A[i-1]) >= k:
             current_length += 1
         else:
-            # Reset current length if condition is not met
+            # Reset tracking for a new potential valid subarray
+            start = i
             current_length = 1
         
-        # Update max length
+        # Update max length if needed
         max_length = max(max_length, current_length)
     
     return max_length
