@@ -17,27 +17,21 @@ def find_closest_pair(numbers):
     if not numbers or len(numbers) < 2:
         raise ValueError("Input list must contain at least two numbers")
     
-    # Sort the input list to help find the closest pair
+    # If all input is the same, return that pair
+    if len(set(numbers)) == 1:
+        return (numbers[0], numbers[0])
+    
+    # Create a complete list of pair differences
+    pair_diffs = []
     sorted_nums = sorted(numbers)
     
-    # Initialize variables to track the closest pair
-    min_diff = float('inf')
-    closest_pair = None
-    
-    # Compare adjacent numbers in the sorted list
     for i in range(len(sorted_nums) - 1):
-        # Calculate difference between adjacent numbers
-        current_diff = abs(sorted_nums[i] - sorted_nums[i+1])
-        
-        # Update closest pair if:
-        # 1. Current difference is smaller than previous min_diff, or
-        # 2. Current difference is equal to min_diff but with smaller numbers
-        if (current_diff < min_diff or 
-            (current_diff == min_diff and 
-             (sorted_nums[i] < closest_pair[0] or 
-              (sorted_nums[i] == closest_pair[0] and 
-               sorted_nums[i+1] < closest_pair[1])))):
-            min_diff = current_diff
-            closest_pair = (sorted_nums[i], sorted_nums[i+1])
+        pair_diffs.append((abs(sorted_nums[i] - sorted_nums[i+1]), 
+                           sorted_nums[i], 
+                           sorted_nums[i+1]))
     
-    return closest_pair
+    # Sort by difference, then by the first number, then the second
+    pair_diffs.sort(key=lambda x: (x[0], x[1], x[2]))
+    
+    # Return the pair of numbers from the first (smallest) pair
+    return (pair_diffs[0][1], pair_diffs[0][2])
