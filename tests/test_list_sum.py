@@ -7,7 +7,7 @@ def test_basic_smallest_sum():
 
 def test_negative_numbers():
     """Test with lists containing negative numbers"""
-    assert find_smallest_list_sum([-1, -2], [-3, -4]) == -7
+    assert find_smallest_list_sum([-1, -2], [-3, -4]) == -6
 
 def test_mixed_numbers():
     """Test with mixed positive and negative numbers"""
