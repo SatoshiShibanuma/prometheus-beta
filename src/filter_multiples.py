@@ -28,5 +28,5 @@ def filter_special_multiples(numbers):
         if (num % 3 == 0) != (num % 5 == 0)
     ]
     
-    # Return sorted list
-    return sorted(special_multiples)
+    # Return sorted list, with negative numbers sorted according to absolute value
+    return sorted(special_multiples, key=lambda x: (abs(x), x))
