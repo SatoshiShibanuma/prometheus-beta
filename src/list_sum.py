@@ -25,12 +25,5 @@ def find_smallest_list_sum(list1, list2):
     if not all(isinstance(x, int) for x in list1 + list2):
         raise ValueError("All list elements must be integers")
     
-    # Find the smallest sum by selecting the minimum values from each list
-    smallest_sum = float('inf')
-    
-    for x in list1:
-        for y in list2:
-            current_sum = x + y
-            smallest_sum = min(smallest_sum, current_sum)
-    
-    return smallest_sum
+    # Find the smallest sum by selecting the values that result in the smallest sum
+    return min(x + y for x in list1 for y in list2)
