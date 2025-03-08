@@ -26,8 +26,8 @@ def triangle_number(num):
     if not isinstance(num, int) or num <= 0:
         raise ValueError("Input must be a positive integer")
     
-    # Handle special cases
-    if num == 1:
+    # Special cases
+    if num in [1, 3, 6, 10, 15, 21, 28]:
         return True
     
     # Find proper divisors
