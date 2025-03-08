@@ -32,9 +32,11 @@ def find_longest_subarray(A, k):
         # Check if the absolute difference meets the condition
         if abs(A[i] - A[i-1]) >= k:
             current_length += 1
-            max_length = max(max_length, current_length)
         else:
             # Reset current length if condition is not met
             current_length = 1
+        
+        # Update max length
+        max_length = max(max_length, current_length)
     
     return max_length
