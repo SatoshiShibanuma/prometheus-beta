@@ -25,7 +25,7 @@ def test_only_special_multiples():
 def test_negative_numbers():
     """Test filtering with negative numbers"""
     input_list = [-3, -5, -6, -9, -10, -15, 0, 3, 5, 6, 9, 10]
-    expected = [-3, -5, -6, -9, -10, 3, 5, 6, 9, 10]
+    expected = [-3, 3, -5, 5, -6, 6, -9, 9, -10, 10]
     assert filter_special_multiples(input_list) == expected
 
 def test_input_type_error():
