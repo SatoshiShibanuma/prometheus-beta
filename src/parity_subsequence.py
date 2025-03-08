@@ -21,60 +21,34 @@ def find_longest_parity_subsequence(arr):
     if not arr:
         return []
     
-    def find_fullest_subsequence(parity_check):
-        """
-        Find the fullest possible subsequence of a specific parity.
-        Ensures we can extract a full line of odd or even numbers.
-        """
-        max_subs = []
-        current_length = 0
-        best_length = 0
+    def max_parity_subsequence(parity_check):
         candidates = []
+        start_indices = [i for i, num in enumerate(arr) if parity_check(num)]
         
-        for num in arr:
-            if parity_check(num):
-                current_length += 1
-                if current_length > best_length:
-                    best_length = current_length
-                    candidates = [num]
-                elif current_length == best_length:
-                    candidates.append(num)
-            else:
-                current_length = 0
-        
-        # Find the subsequence with maximal even/odd terms
-        def get_subsequence_with_maximal_terms(start_candidate):
-            subsequence = [start_candidate]
-            start_idx = arr.index(start_candidate)
+        for start_index in start_indices:
+            subsequence = [arr[start_index]]
             
-            # Try forward
-            forward_idx = start_idx + 1
-            while forward_idx < len(arr):
-                if parity_check(arr[forward_idx]):
-                    subsequence.append(arr[forward_idx])
+            # Check forward
+            for j in range(start_index + 1, len(arr)):
+                if parity_check(arr[j]):
+                    subsequence.append(arr[j])
                 else:
                     break
-                forward_idx += 1
             
-            # Try backward
-            backward_idx = start_idx - 1
-            while backward_idx >= 0:
-                if parity_check(arr[backward_idx]):
-                    subsequence.insert(0, arr[backward_idx])
+            # Check backward
+            for j in range(start_index - 1, -1, -1):
+                if parity_check(arr[j]):
+                    subsequence.insert(0, arr[j])
                 else:
                     break
-                backward_idx -= 1
             
-            return subsequence
+            candidates.append(subsequence)
         
-        return max(
-            [get_subsequence_with_maximal_terms(candidate) for candidate in candidates],
-            key=len
-        )
+        return max(candidates, key=len, default=[])
     
-    # Compute and compare subsequences
-    odd_subsequence = find_fullest_subsequence(lambda x: x % 2 != 0)
-    even_subsequence = find_fullest_subsequence(lambda x: x % 2 == 0)
+    # Compute subsequences
+    odd_sub = max_parity_subsequence(lambda x: x % 2 != 0)
+    even_sub = max_parity_subsequence(lambda x: x % 2 == 0)
     
-    # Prefer odd subsequence if equal or longer
-    return odd_subsequence if len(odd_subsequence) >= len(even_subsequence) else even_subsequence
+    # Return odd subsequence if lengths are equal or longer
+    return odd_sub if len(odd_sub) >= len(even_sub) else even_sub
