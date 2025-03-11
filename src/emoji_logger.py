@@ -37,16 +37,17 @@ def log_with_emojis(message, emoji_symbol=None, log_level='info'):
         raise ValueError(f"Invalid log level. Choose from {', '.join(log_levels.keys())}")
 
     # Add emoji if provided
+    full_message = message
     if emoji_symbol:
         try:
             # Convert emoji code to actual emoji if needed
             formatted_emoji = emoji.emojize(emoji_symbol, language='alias') if emoji_symbol.startswith(':') else emoji_symbol
-            full_message = f"{formatted_emoji} {message}"
+            # If emoji conversion succeeds or is a valid unicode emoji
+            if emoji.is_emoji(formatted_emoji):
+                full_message = f"{formatted_emoji} {message}"
         except Exception:
-            # If emoji conversion fails, fall back to original message
-            full_message = message
-    else:
-        full_message = message
+            # If emoji conversion fails, use original message
+            pass
 
     # Log the message
     log_func = log_levels[log_level.lower()]
