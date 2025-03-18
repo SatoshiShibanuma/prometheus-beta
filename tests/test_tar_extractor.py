@@ -88,13 +88,23 @@ def test_extract_nonexistent_file(sample_tar_archive):
 
 def test_extract_to_default_location(sample_tar_archive):
     """Test extracting files to the default location."""
+    # Manually remove previously extracted files
+    tar_dir = os.path.dirname(sample_tar_archive)
+    for filename in ['file1.txt', 'file2.txt', 'nested/file3.txt']:
+        full_path = os.path.join(tar_dir, filename)
+        if os.path.exists(full_path):
+            if os.path.isdir(os.path.dirname(full_path)):
+                os.remove(full_path)
+    
     extracted = extract_tar_archive(sample_tar_archive)
     
     assert len(extracted) == 3
     assert all(os.path.exists(path) for path in extracted)
     
     # Check that the extracted files are in the same directory as the tar file
-    tar_dir = os.path.dirname(sample_tar_archive)
+    print("EXTRACTED FILES:", extracted)
+    print("TAR FILE DIR:", tar_dir)
+    
     assert all(os.path.dirname(path) == tar_dir for path in extracted)
 
 
