@@ -1,6 +1,6 @@
 import time
 import logging
-from typing import Callable, Optional, Any
+from typing import Callable, Optional, Any, Union
 
 class ProcessLogger:
     """
@@ -82,31 +82,39 @@ class ProcessLogger:
         self.logger.info(completion_msg)
 
 def log_process_progress(
-    func: Callable, 
+    func: Optional[Callable] = None, 
+    *, 
     total_steps: Optional[int] = None, 
     logger: Optional[logging.Logger] = None
-) -> Callable:
+) -> Union[Callable, Callable[[Callable], Callable]]:
     """
     A decorator to automatically log progress for a function.
     
     Args:
-        func (Callable): The function to be decorated
+        func (Optional[Callable]): The function to be decorated
         total_steps (Optional[int]): Total number of steps in the process
         logger (Optional[logging.Logger]): Custom logger to use
     
     Returns:
         Callable: Wrapped function with progress logging
     """
-    def wrapper(*args: Any, **kwargs: Any):
-        process_logger = ProcessLogger(logger=logger, total_steps=total_steps)
-        process_logger.start()
+    def decorator(fn: Callable) -> Callable:
+        def wrapper(*args: Any, **kwargs: Any):
+            process_logger = ProcessLogger(logger=logger, total_steps=total_steps)
+            process_logger.start()
+            
+            try:
+                result = fn(*args, **kwargs)
+                process_logger.complete()
+                return result
+            except Exception as e:
+                process_logger.complete(f"Failed with error: {str(e)}")
+                raise
         
-        try:
-            result = func(*args, **kwargs)
-            process_logger.complete()
-            return result
-        except Exception as e:
-            process_logger.complete(f"Failed with error: {str(e)}")
-            raise
+        return wrapper
     
-    return wrapper
+    # Support both @log_process_progress and @log_process_progress()
+    if func is None:
+        return decorator
+    else:
+        return decorator(func)
