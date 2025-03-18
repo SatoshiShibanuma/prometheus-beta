@@ -5,7 +5,7 @@ def convert_to_alternating_snake_case(input_string: str) -> str:
     Alternating snake case means:
     - Convert to lowercase
     - Separate words by underscores
-    - Alternate case between lowercase and original case words
+    - Alternate case between lowercase and capitalized words
     
     Args:
         input_string (str): The input string to convert
@@ -44,7 +44,7 @@ def convert_to_alternating_snake_case(input_string: str) -> str:
     
     # Alternate case for subsequent words
     for i, word in enumerate(words[1:], 1):
-        result_words.append(word if i % 2 == 1 else word.lower())
+        result_words.append(word.upper() if i % 2 == 1 else word.lower())
     
     # Join words with underscores
     return '_'.join(result_words)
