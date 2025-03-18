@@ -28,13 +28,15 @@ def extract_tar_archive(
         ValueError: For invalid input parameters.
     """
     # Validate input tar path
+    tar_path = os.path.abspath(tar_path)  # Ensure absolute path
     if not os.path.exists(tar_path):
         raise FileNotFoundError(f"Tar archive not found: {tar_path}")
 
     # Determine extraction path
     if extract_path is None:
-        extract_path = os.path.dirname(os.path.abspath(tar_path))
+        extract_path = os.path.dirname(tar_path)
     else:
+        extract_path = os.path.abspath(extract_path)  # Ensure absolute path
         # Ensure extraction directory exists
         os.makedirs(extract_path, exist_ok=True)
 
