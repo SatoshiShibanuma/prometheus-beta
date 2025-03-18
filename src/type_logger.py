@@ -38,5 +38,11 @@ def log_variable_type(variable):
     # Log the type
     logger.info(f'Variable type: {var_type}')
     
-    # Return the type as a string for potential further use
-    return var_type.__name__
+    # Return the type name, handling both built-in types and custom classes
+    type_name = var_type.__name__
+    
+    # For custom classes, extract just the class name
+    if '.' in type_name:
+        type_name = type_name.split('.')[-1]
+    
+    return type_name
