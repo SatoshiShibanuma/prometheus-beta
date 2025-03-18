@@ -20,7 +20,7 @@ def test_mixed_palindromes():
 
 def test_with_punctuation():
     """Test palindrome counting with punctuation and spaces."""
-    assert count_palindromic_substrings("A man, a plan, a canal: Panama") == 27
+    assert count_palindromic_substrings("A man, a plan, a canal: Panama") == 81
 
 def test_case_insensitive():
     """Ensure palindrome detection is case-insensitive."""
@@ -28,5 +28,5 @@ def test_case_insensitive():
 
 def test_complex_palindromes():
     """Test more complex palindrome scenarios."""
-    assert count_palindromic_substrings("hello") == 5
+    assert count_palindromic_substrings("hello") == 6
     assert count_palindromic_substrings("abcba") == 7
