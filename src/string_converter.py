@@ -27,11 +27,11 @@ def convert_to_alternating_snake_case(input_string: str) -> str:
         raise TypeError("Input must be a string")
     
     # Handle empty string
-    if not input_string:
+    if not input_string.strip():
         return ""
     
-    # Split the string into words
-    words = input_string.split()
+    # Split the string into words and strip
+    words = [word.strip() for word in input_string.split()]
     
     # Return immediately if no words
     if not words:
@@ -42,7 +42,7 @@ def convert_to_alternating_snake_case(input_string: str) -> str:
     
     # Alternate case for subsequent words
     for i, word in enumerate(words[1:], 1):
-        result_words.append(word.upper() if i % 2 == 1 else word.lower())
+        result_words.append(word.capitalize() if i % 2 == 1 else word.lower())
     
     # Join words with underscores
     return '_'.join(result_words)
