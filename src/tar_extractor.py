@@ -32,13 +32,12 @@ def extract_tar_archive(
     if not os.path.exists(tar_path):
         raise FileNotFoundError(f"Tar archive not found: {tar_path}")
 
-    # Determine extraction path
-    if extract_path is None:
-        extract_path = os.path.dirname(tar_path)
-    else:
-        extract_path = os.path.abspath(extract_path)  # Ensure absolute path
-        # Ensure extraction directory exists
-        os.makedirs(extract_path, exist_ok=True)
+    # Always use tar file's directory as default
+    extract_path = os.path.dirname(tar_path)
+
+    # Ensure extraction directory exists
+    if not os.path.exists(extract_path):
+        os.makedirs(extract_path)
 
     # Normalize files_to_extract to a list
     if files_to_extract is None:
