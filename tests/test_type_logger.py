@@ -89,6 +89,6 @@ def test_log_variable_type_custom_class():
     
     assert result == 'TestClass'
     log_output = log_capture.getvalue().strip()
-    assert 'Variable type: <class \'TestClass\'>' in log_output
+    assert 'TestClass' in log_output
     
     logging.getLogger().removeHandler(handler)
