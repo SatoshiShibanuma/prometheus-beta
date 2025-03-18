@@ -35,8 +35,8 @@ def test_get_file_owner_input_types():
     absolute_file_path = os.path.abspath('README.md')
     assert isinstance(get_file_owner(absolute_file_path), str)
     
-    # Expanded user path
-    user_path = '~/README.md'
+    # Use README.md expanded path
+    user_path = os.path.expanduser('~/README.md') if os.path.exists(os.path.expanduser('~/README.md')) else './README.md'
     assert isinstance(get_file_owner(user_path), str)
 
 def test_get_file_owner_return_type():
