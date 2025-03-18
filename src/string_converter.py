@@ -42,7 +42,7 @@ def convert_to_alternating_snake_case(input_string: str) -> str:
     
     # Alternate case for subsequent words
     for i, word in enumerate(words[1:], 1):
-        result_words.append(word.capitalize() if i % 2 == 1 else word.lower())
+        result_words.append(word.upper() if i % 2 == 1 else word.lower())
     
     # Join words with underscores
     return '_'.join(result_words)
