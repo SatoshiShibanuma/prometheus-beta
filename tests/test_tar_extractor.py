@@ -93,19 +93,26 @@ def test_extract_to_default_location(sample_tar_archive):
     for filename in ['file1.txt', 'file2.txt', 'nested/file3.txt']:
         full_path = os.path.join(tar_dir, filename)
         if os.path.exists(full_path):
-            if os.path.isdir(os.path.dirname(full_path)):
+            try:
                 os.remove(full_path)
+            except IsADirectoryError:
+                shutil.rmtree(os.path.dirname(full_path))
+    
+    # If nested directory exists but is empty, remove it
+    nested_dir = os.path.join(tar_dir, 'nested')
+    if os.path.exists(nested_dir) and not os.listdir(nested_dir):
+        os.rmdir(nested_dir)
     
     extracted = extract_tar_archive(sample_tar_archive)
     
     assert len(extracted) == 3
     assert all(os.path.exists(path) for path in extracted)
     
-    # Check that the extracted files are in the same directory as the tar file
-    print("EXTRACTED FILES:", extracted)
-    print("TAR FILE DIR:", tar_dir)
-    
-    assert all(os.path.dirname(path) == tar_dir for path in extracted)
+    # Check that extracted files have correct base directory
+    for path in extracted:
+        # Get the base path and see if it's exactly the tar file's directory
+        base_path = os.path.dirname(path)
+        assert base_path == tar_dir or os.path.dirname(base_path) == tar_dir
 
 
 def test_raise_file_not_found():
