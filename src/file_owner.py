@@ -15,12 +15,16 @@ def get_file_owner(file_path):
         FileNotFoundError: If the file does not exist.
         PermissionError: If there's no permission to access file metadata.
     """
-    # Normalize the path to handle potential relative paths
+    # Expand user path and then get absolute path
     full_path = os.path.abspath(os.path.expanduser(file_path))
 
     # Check if file exists
     if not os.path.exists(full_path):
-        raise FileNotFoundError(f"File not found: {file_path}")
+        # Additional check for expanded paths
+        if not os.path.exists(os.path.expanduser(file_path)):
+            raise FileNotFoundError(f"File not found: {file_path}")
+        # If the original expanded path exists, use it
+        full_path = os.path.expanduser(file_path)
 
     try:
         # Get file stats and retrieve owner's user ID
