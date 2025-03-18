@@ -21,15 +21,22 @@ def log_variable_type(variable):
         # Logs: 'Variable type: <class 'int'>'
         # Returns: 'int'
     """
-    # Configure logging if not already configured
-    logging.basicConfig(level=logging.INFO, 
-                        format='%(asctime)s - %(levelname)s - %(message)s')
+    # Ensure a logger is used instead of basic config
+    logger = logging.getLogger(__name__)
+    
+    # Ensure the logger has a handler if no handler exists
+    if not logger.handlers:
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.INFO)
     
     # Get the type of the variable
     var_type = type(variable)
     
     # Log the type
-    logging.info(f'Variable type: {var_type}')
+    logger.info(f'Variable type: {var_type}')
     
     # Return the type as a string for potential further use
     return var_type.__name__
