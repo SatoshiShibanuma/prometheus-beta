@@ -52,7 +52,8 @@ def extract_tar_archive(
         with tarfile.open(tar_path, 'r:*') as tar:
             # If no specific files specified, extract all
             if not files_to_extract:
-                tar.extractall(path=extract_path)
+                # Use default filter to handle Python 3.14 deprecation
+                tar.extractall(path=extract_path, filter='data')
                 extracted_files = [
                     os.path.join(extract_path, name) 
                     for name in tar.getnames()
@@ -61,7 +62,11 @@ def extract_tar_archive(
                 # Extract specific files
                 for file in files_to_extract:
                     try:
-                        tar.extract(file, path=extract_path)
+                        tar.extract(
+                            file, 
+                            path=extract_path, 
+                            filter='data'  # Use data filter for security
+                        )
                         extracted_files.append(
                             os.path.join(extract_path, file)
                         )
