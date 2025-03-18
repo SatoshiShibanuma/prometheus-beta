@@ -21,8 +21,18 @@ def convert_to_random_case(input_string):
     if not input_string:
         return ""
     
-    # Convert to random case
-    return ''.join(
-        char.upper() if random.choice([True, False]) else char.lower() 
+    # Convert to random case, ensuring at least some characters change
+    result = ''.join(
+        char.upper() if random.random() > 0.5 else char.lower() 
         for char in input_string
     )
+    
+    # If result is identical to input, force at least one character change
+    if result.lower() == input_string.lower():
+        # Pick a random index to change
+        change_index = random.randint(0, len(input_string) - 1)
+        result_list = list(result)
+        result_list[change_index] = result_list[change_index].swapcase()
+        result = ''.join(result_list)
+    
+    return result
