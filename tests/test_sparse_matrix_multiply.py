@@ -16,8 +16,9 @@ def test_basic_sparse_matrix_multiplication():
     result = sparse_matrix_multiply(matrix_a, matrix_b)
     
     # Verify specific elements
-    assert 0 in result and 0 in result[0]
-    assert result[0][0] == 4
+    assert 1 in result[0] and 2 in result[0]
+    assert result[0][1] == 5
+    assert result[0][2] == 21
     assert result.get(1, {}).get(1) == 12
     # Verify no unexpected elements
     assert len(result.get(0, {})) <= 2
@@ -51,7 +52,10 @@ def test_sparse_matrix_with_floats():
     
     # Check specific values 
     assert 0 in result
-    assert result[0][0] == 6.0
+    assert 1 in result[0]
+    assert 2 in result[0]
+    assert result[0][1] == 7.5
+    assert result[0][2] == 21.0
     assert result[1][1] == 15.0
 
 def test_large_sparse_matrix():
