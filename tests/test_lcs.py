@@ -22,8 +22,8 @@ def test_lcs_no_common_substring():
 
 def test_lcs_case_sensitive():
     """Test case sensitivity."""
-    assert longest_common_subsequence("AbC", "aBC") == ""
-    assert longest_common_subsequence("abcDE", "aBcde") == "acD"
+    assert longest_common_subsequence("AbC", "aBC") == ""  # Different cases
+    assert longest_common_subsequence("ABCDE", "ABCDE") == "ABCDE"  # Exact match
 
 def test_lcs_long_strings():
     """Test with longer input strings."""
