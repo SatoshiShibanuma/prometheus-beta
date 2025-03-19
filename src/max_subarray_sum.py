@@ -29,8 +29,7 @@ def max_subarray_sum_with_constraints(A, k, s):
     
     # Initialize variables for sliding window approach
     n = len(A)
-    max_sum = float('-inf')
-    found_valid_subarray = False
+    max_sum = None
     
     # Try all possible subarrays with at least k elements
     for start in range(n - k + 1):
@@ -41,8 +40,7 @@ def max_subarray_sum_with_constraints(A, k, s):
             
             # Check if current window meets constraints
             if (end - start + 1 >= k) and (current_sum >= s):
-                max_sum = max(max_sum, current_sum)
-                found_valid_subarray = True
+                if max_sum is None or current_sum > max_sum:
+                    max_sum = current_sum
     
-    # Return result based on whether a valid subarray was found
-    return max_sum if found_valid_subarray else None
+    return max_sum
