@@ -24,7 +24,7 @@ class BinarySearchTree:
     
     Maintains BST properties:
     1. Left subtree contains only nodes with keys less than the node's key
-    2. Right subtree contains only nodes with keys greater than the node's key
+    2. Right subtree contains only nodes with keys greater or equal to the node's key
     3. Both left and right subtrees are also binary search trees
     """
     def __init__(self):
@@ -63,7 +63,7 @@ class BinarySearchTree:
                 # Otherwise, continue searching in the left subtree
                 current = current.left
             
-            # If key is greater than or equal to current node's key, go right
+            # If key is greater or equal to current node's key, go right
             else:
                 # If no right child, insert here
                 if current.right is None:
