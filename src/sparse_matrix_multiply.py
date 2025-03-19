@@ -17,7 +17,7 @@ def sparse_matrix_multiply(
         Dict[int, Dict[int, Union[int, float]]]: Resulting sparse matrix after multiplication
     """
     # Threshold for considering a value as zero
-    ZERO_THRESHOLD = 1e-8
+    ZERO_THRESHOLD = 1e-6
     
     # Handle empty matrices
     if not matrix_a or not matrix_b:
