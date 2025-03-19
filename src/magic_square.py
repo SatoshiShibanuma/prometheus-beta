@@ -3,31 +3,35 @@ def is_magic_square(numbers):
     Determine if a list of 10 integers represents a valid 3x3 magic square.
     
     A magic square is a 3x3 grid where:
-    - Contains exactly 10 numbers (9 grid numbers + optional separator)
+    - Contains exactly 9 or 10 numbers 
     - Numbers are unique and in range 1-9
     - All rows, columns, and diagonals sum to the same magic constant (15)
     
     Args:
-        numbers (list): A list of 10 integers to check
+        numbers (list): A list of 9 or 10 integers to check
     
     Returns:
         bool: True if the list represents a valid 3x3 magic square, False otherwise
     
     Raises:
-        ValueError: If input is not a list of 10 integers
+        ValueError: If input is not a list
     """
     # Validate input
     if not isinstance(numbers, list):
         raise ValueError("Input must be a list")
     
-    # Check for correct length (10 numbers)
-    if len(numbers) != 10:
+    # Check for correct length (9 or 10 numbers)
+    if len(numbers) not in [9, 10]:
         return False
     
-    # Optional: remove the separator number if present
-    if len(set(numbers)) == 10:
-        # If all 10 numbers are unique, remove the last number (separator)
-        grid_numbers = sorted(numbers[:-1])
+    # Remove separator if 10 numbers
+    if len(numbers) == 10:
+        # Verify the separator is distinct from grid numbers
+        grid_numbers = sorted(set(numbers[:-1]))
+        separator = numbers[-1]
+        # Ensure separator is not part of the grid
+        if separator in grid_numbers:
+            return False
     else:
         grid_numbers = sorted(numbers)
     
