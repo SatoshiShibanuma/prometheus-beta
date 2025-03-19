@@ -25,13 +25,15 @@ def reverse_substring(s: str, start: int, end: int) -> str:
     if start == end:
         return s
     
-    # Split the string into before, middle, and after parts
-    before = s[:start]
-    middle = s[start:end]
-    after = s[end:]
+    # Convert to list to allow modification
+    chars = list(s)
     
-    # Reverse the middle part
-    middle = middle[::-1]
+    # Reverse the specified substring in-place
+    left, right = start, end - 1
+    while left < right:
+        chars[left], chars[right] = chars[right], chars[left]
+        left += 1
+        right -= 1
     
-    # Combine the parts
-    return before + middle + after
+    # Convert back to string
+    return ''.join(chars)
