@@ -19,7 +19,7 @@ def test_basic_sparse_matrix_multiplication():
     assert result[0][0] == 4
     assert result.get(1, {}).get(1) == 12
     # Verify no unexpected elements
-    assert 0 < len(result.get(0, {})) <= 2
+    assert len(result.get(0, {})) <= 2
     assert len(result.get(1, {})) == 1
 
 def test_empty_matrices():
@@ -29,7 +29,7 @@ def test_empty_matrices():
 
 def test_zero_result_matrix():
     # Matrices that result in essentially zero matrix
-    matrix_a = {0: {0: 0.0001}, 1: {1: 0.0001}}
+    matrix_a = {0: {0: 1e-11}, 1: {1: 1e-11}}
     matrix_b = {0: {1: 3000}, 1: {0: 4000}}
     
     assert sparse_matrix_multiply(matrix_a, matrix_b) == {}
@@ -49,9 +49,9 @@ def test_sparse_matrix_with_floats():
     result = sparse_matrix_multiply(matrix_a, matrix_b)
     
     # Check specific values with approx
-    assert result[0][0] == pytest.approx(6.0)
-    assert result[0][1] == pytest.approx(7.5)
-    assert result[1][1] == pytest.approx(15.0)
+    assert result[0][0] == 6.0
+    assert result[0][1] == 7.5
+    assert result[1][1] == 15.0
 
 def test_large_sparse_matrix():
     # Test with a larger sparse matrix
@@ -81,8 +81,8 @@ def test_very_sparse_performance():
     result = sparse_matrix_multiply(matrix_a, matrix_b)
     
     # Verify result is truly sparse
-    assert 0 < len(result) < 50  # Sparse but not empty
+    assert len(result) > 0 and len(result) < 50  # Sparse but not empty
     # Ensure only diagonal-like entries exist
     for row, row_data in result.items():
         for col, val in row_data.items():
-            assert abs(val - 1) < 1e-10  # Only 1's should exist
+            assert val == 1  # Exact 1's should exist
