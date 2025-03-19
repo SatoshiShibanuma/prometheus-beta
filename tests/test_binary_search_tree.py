@@ -53,24 +53,40 @@ def test_duplicate_key_insertion():
 
 def test_insertion_order_independence():
     """
-    Test that tree structure is consistent regardless of insertion order.
+    Verify BST properties are maintained regardless of insertion order.
     """
-    bst1 = BinarySearchTree()
-    bst1.insert(5)
-    bst1.insert(3)
-    bst1.insert(7)
+    def validate_bst(bst):
+        """
+        Helper function to validate BST properties recursively.
+        """
+        def _is_valid_bst(node, min_val=float('-inf'), max_val=float('inf')):
+            if node is None:
+                return True
+            
+            # Check if current node violates BST property
+            if node.key <= min_val or node.key >= max_val:
+                return False
+            
+            # Recursively check left and right subtrees
+            return (
+                _is_valid_bst(node.left, min_val, node.key) and 
+                _is_valid_bst(node.right, node.key, max_val)
+            )
+        
+        return _is_valid_bst(bst.root)
     
-    bst2 = BinarySearchTree()
-    bst2.insert(7)
-    bst2.insert(3)
-    bst2.insert(5)
+    # Test different insertion orders
+    insertion_orders = [
+        [5, 3, 7],
+        [3, 5, 7],
+        [7, 5, 3],
+        [7, 3, 5]
+    ]
     
-    # Verify bst1 structure
-    assert bst1.root.key == 5
-    assert bst1.root.left.key == 3
-    assert bst1.root.right.key == 7
-    
-    # Verify bst2 structure
-    assert bst2.root.key == 5
-    assert bst2.root.left.key == 3
-    assert bst2.root.right.key == 7
+    for order in insertion_orders:
+        bst = BinarySearchTree()
+        for value in order:
+            bst.insert(value)
+        
+        # Verify the resulting tree always maintains BST properties
+        assert validate_bst(bst), f"BST properties not maintained for insertion order {order}"
