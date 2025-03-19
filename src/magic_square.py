@@ -24,30 +24,29 @@ def is_magic_square(numbers):
     if len(numbers) not in [9, 10]:
         return False
     
-    # Remove separator if 10 numbers
+    # Create a list of unique numbers (removing potential separator)
     if len(numbers) == 10:
-        # Verify the separator is distinct from grid numbers
-        grid_numbers = sorted(set(numbers[:-1]))
-        separator = numbers[-1]
-        # Ensure separator is not part of the grid
-        if separator in grid_numbers:
-            return False
+        # Try removing last number first
+        test_numbers = sorted(set(numbers[:-1]))
+        # If removing last number doesn't give 9 unique numbers, use full list
+        if len(test_numbers) != 9:
+            test_numbers = sorted(set(numbers))
     else:
-        grid_numbers = sorted(numbers)
+        test_numbers = sorted(numbers)
     
     # Validate grid requirements
-    if len(grid_numbers) != 9:
+    if len(test_numbers) != 9:
         return False
     
     # Check unique numbers in range 1-9
-    if set(grid_numbers) != set(range(1, 10)):
+    if set(test_numbers) != set(range(1, 10)):
         return False
     
     # Reshape the list into a 3x3 grid
     grid = [
-        grid_numbers[0:3],
-        grid_numbers[3:6],
-        grid_numbers[6:9]
+        test_numbers[0:3],
+        test_numbers[3:6],
+        test_numbers[6:9]
     ]
     
     # Magic constant for 3x3 magic square is always 15
