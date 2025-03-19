@@ -31,6 +31,9 @@ def sparse_matrix_multiply(
     # Compute sparse matrix multiplication
     result: Dict[int, Dict[int, Union[int, float]]] = {}
     
+    # Threshold for considering a value as zero
+    ZERO_THRESHOLD = 1e-10
+    
     for row_a, row_a_data in matrix_a.items():
         result_row: Dict[int, Union[int, float]] = {}
         
@@ -41,18 +44,13 @@ def sparse_matrix_multiply(
                 for k in set(row_a_data) & set(transposed_col_data)
             )
             
-            # Only store significantly non-zero values
-            if abs(cell_value) > 1e-10:
-                result_row[col_b] = cell_value
+            # Only store values above a threshold
+            if abs(cell_value) > ZERO_THRESHOLD:
+                # Try to keep the original precision (integer if possible)
+                result_row[col_b] = int(cell_value) if cell_value.is_integer() else cell_value
         
-        # Only add non-empty rows with significant non-zero values
-        # Trim the row to remove near-zero entries
-        cleaned_row = {
-            col: val for col, val in result_row.items() 
-            if abs(val) > 1e-10
-        }
-        
-        if cleaned_row:
-            result[row_a] = cleaned_row
+        # Only add non-empty rows
+        if result_row:
+            result[row_a] = result_row
     
     return result
