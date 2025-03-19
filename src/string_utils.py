@@ -25,15 +25,7 @@ def reverse_substring(s: str, start: int, end: int) -> str:
     if start == end:
         return s
     
-    # Convert to list to allow modification
-    chars = list(s)
+    # Create the modified string
+    modified = s[:start] + s[start:end][::-1] + s[end:]
     
-    # Reverse the specified substring in-place
-    left, right = start, end - 1
-    while left < right:
-        chars[left], chars[right] = chars[right], chars[left]
-        left += 1
-        right -= 1
-    
-    # Convert back to string
-    return ''.join(chars)
+    return modified
