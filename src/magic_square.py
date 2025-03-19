@@ -24,25 +24,44 @@ def is_magic_square(numbers):
     if len(numbers) not in [9, 10]:
         return False
     
-    # Extract grid numbers, handling both 9 and 10 number cases
+    # Extract grid numbers with flexible separator handling
     if len(numbers) == 10:
-        # If last number is different from grid numbers, use first 9
-        grid_numbers = sorted(set(numbers[:-1]))
+        # Try different strategies to extract 9 unique grid numbers
+        test_sets = [
+            # Strategy 1: Remove last number
+            sorted(set(numbers[:-1])),
+            # Strategy 2: Remove if matches a grid number
+            sorted(set([n for n in numbers if n != numbers[-1]])),
+            # Strategy 3: Full list
+            sorted(set(numbers))
+        ]
         
-        # If we didn't get 9 unique numbers, include the last number
-        if len(grid_numbers) != 9:
-            grid_numbers = sorted(set(numbers))
-    else:
-        grid_numbers = sorted(numbers)
-    
-    # Validate grid requirements
-    if len(grid_numbers) != 9:
+        for test_numbers in test_sets:
+            # Validate each possibility
+            if (len(test_numbers) == 9 and 
+                set(test_numbers) == set(range(1, 10)) and 
+                _validate_magic_square(test_numbers)):
+                return True
         return False
     
-    # Check unique numbers in range 1-9
-    if set(grid_numbers) != set(range(1, 10)):
-        return False
+    # For 9 numbers, validate directly
+    if (len(set(numbers)) == 9 and 
+        set(numbers) == set(range(1, 10)) and 
+        _validate_magic_square(numbers)):
+        return True
     
+    return False
+
+def _validate_magic_square(grid_numbers):
+    """
+    Internal helper function to validate magic square grid.
+    
+    Args:
+        grid_numbers (list): 9 unique numbers in range 1-9
+    
+    Returns:
+        bool: True if the grid represents a valid magic square, False otherwise
+    """
     # Reshape the list into a 3x3 grid
     grid = [
         grid_numbers[0:3],
