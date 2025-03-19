@@ -41,12 +41,18 @@ def sparse_matrix_multiply(
                 for k in set(row_a_data) & set(transposed_col_data)
             )
             
-            # Only store non-zero values
+            # Only store significantly non-zero values
             if abs(cell_value) > 1e-10:
                 result_row[col_b] = cell_value
         
-        # Only add non-empty rows
-        if result_row:
-            result[row_a] = result_row
+        # Only add non-empty rows with significant non-zero values
+        # Trim the row to remove near-zero entries
+        cleaned_row = {
+            col: val for col, val in result_row.items() 
+            if abs(val) > 1e-10
+        }
+        
+        if cleaned_row:
+            result[row_a] = cleaned_row
     
     return result
