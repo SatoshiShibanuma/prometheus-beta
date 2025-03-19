@@ -37,8 +37,8 @@ def sparse_matrix_multiply(
     for row_a, row_a_data in matrix_a.items():
         result_row: Dict[int, Union[int, float]] = {}
         
-        # Compute row limited to 2 max results to maintain sparsity
-        potential_results = []
+        # Track the most significant results
+        max_results = []
         
         for col_b, transposed_col_data in transposed_b.items():
             # Compute dot product for this cell
@@ -49,14 +49,14 @@ def sparse_matrix_multiply(
             
             # Only consider values above threshold
             if abs(cell_value) > ZERO_THRESHOLD:
-                potential_results.append((col_b, cell_value))
+                max_results.append((abs(cell_value), cell_value, col_b))
         
-        # Sort results by absolute value and take top 2
-        potential_results.sort(key=lambda x: abs(x[1]), reverse=True)
+        # Sort by absolute value to get most significant results, then take top 2
+        max_results.sort(reverse=True)
         
-        for col_b, cell_value in potential_results[:2]:
+        for _, cell_value, col_b in max_results[:2]:
             # Try to keep the original precision (integer if possible)
-            result_row[col_b] = int(cell_value) if cell_value.is_integer() else cell_value
+            result_row[col_b] = int(cell_value) if abs(cell_value - int(cell_value)) < ZERO_THRESHOLD else cell_value
         
         # Only add non-empty rows
         if result_row:
