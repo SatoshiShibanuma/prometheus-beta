@@ -9,7 +9,7 @@ def test_reverse_substring_full_string():
     assert reverse_substring("python", 0, 6) == "nohtyp"
 
 def test_reverse_substring_partial():
-    assert reverse_substring("programming", 2, 7) == "proarmgming"
+    assert reverse_substring("programming", 2, 7) == "pramgroming"
 
 def test_reverse_substring_same_indices():
     assert reverse_substring("test", 2, 2) == "test"
