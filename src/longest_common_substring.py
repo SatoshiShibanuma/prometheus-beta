@@ -29,15 +29,15 @@ def longest_common_substring(str1: str, str2: str) -> str:
     if not str1 or not str2:
         return ""
     
-    # Prefer exact string comparisons, then case-sensitive matching
+    # Special case for identical strings
     if str1 == str2:
         return str1
     
-    # Handle case sensitivity
-    str1, str2 = str1.lower(), str2.lower()
+    # Convert to lowercase for comparison while preserving original case
+    lower_str1, lower_str2 = str1.lower(), str2.lower()
     
     # Create a matrix to store lengths of common substrings
-    m, n = len(str1), len(str2)
+    m, n = len(lower_str1), len(lower_str2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
     
     # Variables to track the longest substring
@@ -47,7 +47,7 @@ def longest_common_substring(str1: str, str2: str) -> str:
     # Dynamic programming to find longest common substring
     for i in range(1, m + 1):
         for j in range(1, n + 1):
-            if str1[i-1] == str2[j-1]:
+            if lower_str1[i-1] == lower_str2[j-1]:
                 dp[i][j] = dp[i-1][j-1] + 1
                 
                 # Update max length and end index if needed
@@ -55,29 +55,9 @@ def longest_common_substring(str1: str, str2: str) -> str:
                     max_length = dp[i][j]
                     end_index = i - 1
     
-    # Return the longest common substring with the exact same case as str1
-    longest = str1[end_index - max_length + 1 : end_index + 1] if max_length > 0 else ""
+    # If no common substring of length > 1, return empty string
+    if max_length < 2:
+        return ""
     
-    # Additional check to prevent partial matches when no true common substring exists
-    return longest if _has_distinct_substring(str1, str2, longest) else ""
-
-def _has_distinct_substring(str1: str, str2: str, substring: str) -> bool:
-    """
-    Helper function to validate if the substring is distinct.
-    
-    Args:
-        str1 (str): First string
-        str2 (str): Second string
-        substring (str): Potential common substring
-    
-    Returns:
-        bool: True if substring is truly common, False otherwise
-    """
-    # If substring is empty, return False
-    if not substring:
-        return False
-    
-    # Check that substring exists in both strings
-    return (substring in str1.lower() and 
-            substring in str2.lower() and 
-            len(substring) > 1)  # Prevent single-character false positives
+    # Extract substring with the same case as in the original str1
+    return str1[end_index - max_length + 1 : end_index + 1]
