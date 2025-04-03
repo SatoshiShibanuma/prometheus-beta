@@ -9,7 +9,7 @@ def find_palindrome_pairs(words):
         list: A list of pairs of indices where concatenated words form palindromes
     
     Time Complexity: O(n^2 * m), where n is the number of words and m is word length
-    Space Complexity: O(1)
+    Space Complexity: O(n^2)
     
     Examples:
         >>> find_palindrome_pairs(["bat", "tab", "cat"])
@@ -31,14 +31,10 @@ def find_palindrome_pairs(words):
                 continue
             
             # Concatenate words in both orders
-            concat1 = words[i] + words[j]
-            concat2 = words[j] + words[i]
+            concat = words[i] + words[j]
             
-            # Check both concatenation orders
-            if is_palindrome(concat1):
+            # Check if concatenated pair forms a palindrome
+            if is_palindrome(concat):
                 result.append([i, j])
-            if is_palindrome(concat2):
-                result.append([j, i])
     
-    # Remove duplicates while preserving order
-    return list(map(list, set(map(tuple, result))))
+    return result
