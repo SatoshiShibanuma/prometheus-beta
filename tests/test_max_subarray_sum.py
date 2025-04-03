@@ -17,7 +17,7 @@ def test_mixed_numbers():
     """Test an array with mixed positive and negative numbers"""
     arr = [-1, 4, -2, 10, -5, 3, 2, 0]
     k = 3
-    assert max_subarray_sum(arr, k) == 8
+    assert max_subarray_sum(arr, k) == 12
 
 def test_all_negative():
     """Test an array with all negative numbers"""
@@ -25,11 +25,17 @@ def test_all_negative():
     k = 2
     assert max_subarray_sum(arr, k) == -3
 
-def test_empty_array():
-    """Test an empty array"""
+def test_empty_array_with_zero_k():
+    """Test an empty array with k=0"""
     arr = []
     k = 0
     assert max_subarray_sum(arr, k) == 0
+
+def test_empty_array_with_non_zero_k():
+    """Test an empty array with non-zero k"""
+    arr = []
+    with pytest.raises(ValueError, match="Cannot compute subarray sum for an empty array"):
+        max_subarray_sum(arr, 1)
 
 def test_k_equals_array_length():
     """Test when k is equal to array length"""
