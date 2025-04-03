@@ -44,3 +44,10 @@ def test_edge_case_different_word_lengths():
     result = find_palindrome_pairs(words)
     expected = [[0, 1], [1, 0], [3, 4], [4, 3]]
     assert sorted(result) == sorted(expected)
+
+def test_additional_complex_cases():
+    """Test additional complex palindrome scenarios."""
+    words = ["ab", "ba", "a"]
+    result = find_palindrome_pairs(words)
+    expected = [[0, 1], [1, 0], [0, 2], [2, 0], [1, 2], [2, 1]]
+    assert sorted(result) == sorted(expected)
