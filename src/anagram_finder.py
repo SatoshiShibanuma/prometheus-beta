@@ -14,7 +14,7 @@ def find_anagrams(word, word_list):
     
     Raises:
         TypeError: If word is not a string or word_list is not a list
-        ValueError: If word is an empty string
+        ValueError: If word is an empty string after stripping
     """
     # Input validation
     if not isinstance(word, str):
@@ -34,9 +34,9 @@ def find_anagrams(word, word_list):
     
     # Find anagrams (excluding the original word)
     anagrams = [
-        w for w in word_list 
-        if w.lower().strip() != word and 
-        ''.join(sorted(w.lower().strip())) == sorted_word
+        w.strip() for w in word_list 
+        if w.strip().lower() != word and 
+        ''.join(sorted(w.strip().lower())) == sorted_word
     ]
     
     return anagrams
