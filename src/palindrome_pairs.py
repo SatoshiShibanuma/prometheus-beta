@@ -31,7 +31,15 @@ def find_palindrome_pairs(words):
                 continue
             
             # Check if concatenated words form a palindrome
-            if is_palindrome(words[i] + words[j]):
+            concat1 = words[i] + words[j]
+            concat2 = words[j] + words[i]
+            
+            if is_palindrome(concat1):
                 result.append([i, j])
+            
+            # Additional check for different ordering
+            if is_palindrome(concat2):
+                result.append([j, i])
     
-    return result
+    # Remove duplicates while preserving order
+    return list(map(list, set(map(tuple, result))))
