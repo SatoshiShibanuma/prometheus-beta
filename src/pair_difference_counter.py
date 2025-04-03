@@ -24,9 +24,10 @@ def count_pairs_with_difference_of_five(numbers):
     if len(numbers) < 2:
         return 0
     
-    # Count pairs with difference of 5
+    # Count pairs with difference of 5 (adjacent only)
     pair_count = 0
     for i in range(len(numbers) - 1):
+        # Check adjacent pairs strictly, must be next to each other
         if abs(numbers[i] - numbers[i+1]) == 5:
             pair_count += 1
     
