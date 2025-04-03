@@ -20,16 +20,18 @@ def max_subarray_sum(arr, k):
     if not isinstance(k, int):
         raise TypeError("Subarray length must be an integer")
     
+    # Handle empty array case
+    if not arr:
+        if k == 0:
+            return 0
+        raise ValueError("Cannot compute subarray sum for an empty array")
+    
     # Check array and k constraints
     if k < 1:
         raise ValueError("Subarray length must be at least 1")
     
     if k > len(arr):
         raise ValueError("Subarray length cannot be larger than array length")
-    
-    # Handle empty array case
-    if not arr:
-        return 0
     
     # Sliding window approach
     # First, compute sum of first k elements
